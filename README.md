@@ -43,8 +43,8 @@ chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.lo
 We've used these intervals for categorizing TSH:
 | Status | Lower bound, Upper bound |
 | ------ | ------------------------ |
-| Hyperthyrodism |  (0, 0.400)      |
-| Normal         |  (0.401, 3.799)  |
+| Hyperthyrodism |  (0, 0.400]      |
+| Normal         |  (0.401, 3.799]  |
 | Hypothyrodism  |  (3.800, Inf)    |
 
 ```Rscript
@@ -98,21 +98,6 @@ PC10                     -0.8620174  0.1392735  -6.189    6.28e-10 ***
 `chr1:10599281`:TSH_cat1 -0.0322001  0.0090456  -3.560    0.000373 ***
 `chr1:10599281`:TSH_cat0  0.0879747  0.0631732   1.393    0.163774    
 `chr1:10599281`:TSH_cat2 -0.0241069  0.0263290  -0.916    0.359898    
-                         Pr(>|t|)    
-(Intercept)              0.801662    
-PC1                      0.509497    
-PC2                      0.004143 ** 
-PC3                      8.58e-07 ***
-PC4                      0.906108    
-PC5                      0.134971    
-PC6                      0.020236 *  
-PC7                      0.013364 *  
-PC8                      0.118594    
-PC9                      0.141164    
-PC10                     6.28e-10 ***
-`chr1:10599281`:TSH_cat1 0.000373 ***
-`chr1:10599281`:TSH_cat0 0.163774    
-`chr1:10599281`:TSH_cat2 0.359898    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ---
