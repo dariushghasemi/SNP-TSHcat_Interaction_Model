@@ -38,7 +38,7 @@
 
 ##5. We first standardized TSH quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
 
-'''bash
+```bash
 library(caret)
 
 > nq <- normalize2Reference(chris[chris$TSH.Ins == 0, "TSH"], 
@@ -57,10 +57,10 @@ library(caret)
 
 #####changing the reference level to normal TSH
 > chris$TSH_cat <- relevel(chris$TSH_cat, ref = 2)
-'''
+```
 
 ##6. And Finally here is the summary of Regression Model:
-'''Rscript
+```Rscript
 > summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
 
 Call:
@@ -109,4 +109,4 @@ Residual standard error: 0.1345 on 9705 degrees of freedom
   (6 observations deleted due to missingness)
 Multiple R-squared:  0.01141,	Adjusted R-squared:  0.01008 
 F-statistic: 8.613 on 13 and 9705 DF,  p-value: < 2.2e-16
-'''
+```
