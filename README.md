@@ -41,9 +41,11 @@ chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.lo
 ### 5. We then standardized TSH using quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
 
 We've used these intervals for categorizing TSH:
-Hyperthyrodism:  (0, 0.400)
-Normal:          (0.401, 3.799)
-Hypothyrodism:   (3.800, Inf)
+Status | Lower bound, Upper bound
+----------------------------------
+Hyperthyrodism |  (0, 0.400)
+Normal         |  (0.401, 3.799)
+Hypothyrodism  |  (3.800, Inf)
 
 ```Rscript
 library(caret)
