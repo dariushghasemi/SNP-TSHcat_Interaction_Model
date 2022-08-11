@@ -44,7 +44,7 @@ chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.lo
 
 
 
-#### 5. We then standardized TSH using quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
+#### 5. We then categorized TSH based on the imperical cutpoints as follows:
 
 We've used these intervals for categorizing TSH:
 | Status | Lower bound, Upper bound |
@@ -54,19 +54,7 @@ We've used these intervals for categorizing TSH:
 | Hypothyrodism  |  (3.800, Inf)    |
 
 ```Rscript
-library(caret)
----
-nq <- normalize2Reference(chris[chris$TSH.Ins == 0, "TSH"], 
-                          refData = quantile(chris[chris$TSH.Ins == 1, "TSH"], 
-                                             probs = seq(0,1, length.out=length(chris[chris$TSH.Ins == 0, "TSH"])), 
-                                             na.rm = TRUE, names = TRUE, type = 7, digits = 7), ties = TRUE)
----
-#TSH quantile normalized
-chris$TSH.q <- chris$TSH
-chris[chris$TSH.Ins == 0, "TSH.q"] <- nq
 
-summary(cbind(nq, chris[chris$TSH.Ins == 0, "TSH"]))
----
 #categorized TSH
 chris <- chris %>% mutate(TSH_cat = cut(TSH.q, breaks = c(-Inf, 0.401, 3.799, Inf), labels = c("0", "1", "2")))
 chris$TSH_cat <- as.character(chris$TSH_cat)
@@ -79,36 +67,39 @@ We assigned these people to their actual TSH level which we expect they belong b
 
 #### 7. And Finally here is the summary of Regression Model:
 ```Rscript
-summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
+summary(lm(eGFRw.log.Res ~ `chr1:10599281`*TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
 ---
 Call:
-lm(formula = eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
-
+lm(formula = eGFRw.log.Res ~ `chr1:10599281` * TSH_cat + PC1 + 
+    PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
+---
 Residuals:
      Min       1Q   Median       3Q      Max 
--1.75039 -0.07521  0.01555  0.10180  0.48003 
-
+-1.75128 -0.07534  0.01664  0.10113  0.47925 
+---
 Coefficients:
-                           Estimate Std. Error t value    Pr(>|t|)   
-(Intercept)              -0.0003528  0.0014046  -0.251    0.801662    
-PC1                      -0.1037080  0.1572179  -0.660    0.509497    
-PC2                      -0.5212966  0.1817797  -2.868    0.004143 ** 
-PC3                      -0.7526514  0.1528275  -4.925    8.58e-07 ***
-PC4                      -0.0193142  0.1637463  -0.118    0.906108    
-PC5                      -0.2164566  0.1447958  -1.495    0.134971    
-PC6                       0.3265085  0.1405957   2.322    0.020236 *  
-PC7                      -0.3482386  0.1407388  -2.474    0.013364 *  
-PC8                      -0.2431564  0.1557854  -1.561    0.118594    
-PC9                       0.2113223  0.1436013   1.472    0.141164    
-PC10                     -0.8620174  0.1392735  -6.189    6.28e-10 ***
-`chr1:10599281`:TSH_cat1 -0.0322001  0.0090456  -3.560    0.000373 ***
-`chr1:10599281`:TSH_cat0  0.0879747  0.0631732   1.393    0.163774    
-`chr1:10599281`:TSH_cat2 -0.0241069  0.0263290  -0.916    0.359898    
+                           Estimate Std. Error t value Pr(>|t|)    
+(Intercept)               0.0004206  0.0014824   0.284 0.776611    
+`chr1:10599281`          -0.0331346  0.0090480  -3.662 0.000251 ***
+TSH_cat0                  0.0486289  0.0109097   4.457 8.39e-06 ***
+TSH_cat2                 -0.0172469  0.0048188  -3.579 0.000346 ***
+PC1                      -0.1036469  0.1569589  -0.660 0.509048    
+PC2                      -0.5159122  0.1814875  -2.843 0.004483 ** 
+PC3                      -0.7451690  0.1525813  -4.884 1.06e-06 ***
+PC4                      -0.0192509  0.1634859  -0.118 0.906266    
+PC5                      -0.2101364  0.1445884  -1.453 0.146161    
+PC6                       0.3277149  0.1403827   2.334 0.019593 *  
+PC7                      -0.3540776  0.1405188  -2.520 0.011758 *  
+PC8                      -0.2429022  0.1555288  -1.562 0.118372    
+PC9                       0.2156111  0.1433751   1.504 0.132659    
+PC10                     -0.8510523  0.1390583  -6.120 9.71e-10 ***
+`chr1:10599281`:TSH_cat0  0.0619086  0.0649935   0.953 0.340850    
+`chr1:10599281`:TSH_cat2  0.0283585  0.0282496   1.004 0.315474    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ---
-Residual standard error: 0.1345 on 9705 degrees of freedom
+Residual standard error: 0.1343 on 9703 degrees of freedom
   (6 observations deleted due to missingness)
-Multiple R-squared:  0.01141,	Adjusted R-squared:  0.01008 
-F-statistic: 8.613 on 13 and 9705 DF,  p-value: < 2.2e-16
+Multiple R-squared:  0.01486,	Adjusted R-squared:  0.01334 
+F-statistic:  9.76 on 15 and 9703 DF,  p-value: < 2.2e-16
 ```
