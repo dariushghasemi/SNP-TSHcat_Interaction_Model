@@ -1,73 +1,80 @@
 # SNP-TSHcat_Interaction_Model
 
 
-## 1. We first compute the eGFT using CKD-Epi formula using Standardized Serum Creatinine.
+### 1. We first compute the eGFR using CKD-Epi formula in Nephro package in R using the Standardized Serum Creatinine.
 ```Rscript
 ### Computing eGFR.SCr
 library(nephro)
 table(chris$Sex) #check if SEX needs to be recoded
+
 chris$ethnicity <- 0 # 0 for Europeans, and 1 for Africans
 chris$Sex      <- as.numeric(as.character(chris$Sex))
 chris$eGFR     <- CKDEpi.creat(chris$SerumCreatinine.Std, chris$Sex, chris$Age, chris$ethnicity)
 chris$eGFR.log <- log(chris$eGFR)
 ```Rscript
 
-### Winsorizing lower tail of eGFR distribution
+#### Winsorizing lower tail of eGFR distribution
 ```Rscript
-chris$eGFRw    <- chris$eGFR
+chris$eGFRw      <- chris$eGFR
 chris[chris$eGFR < 15 & is.na(chris$eGFR) != TRUE, "eGFRw"] <- 15
 chris$eGFRw.log  <- log(chris$eGFRw)
 ```
-## 2.Then we adjust eGFR for the Age and Sex of the CHRIS participants
-
-### eGFR.log residuals by new scheme
+### 2.Then we adjust eGFR for the Age and Sex of the CHRIS participants
 ```Rscript
-chris$Sex <- as.factor(chris$Sex)
-meGFRw.log <- lm(eGFRw.log ~ Age + Sex, data = chris)
+# eGFR.log residuals by new scheme
+chris$Sex           <- as.factor(chris$Sex)
+meGFRw.log          <- lm(eGFRw.log ~ Age + Sex, data = chris)
 myresidmeGFRw.log   <- data.frame(resm = meGFRw.log$residuals)
 chris$eGFRw.log.Res <- NA
 chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.log$resm
 ```
 
 
-## 3. Using GWAS, we replicated 162 SNPs in 10 Loci out of the 147 associated Loci with kidney function discovered by Mattias Wuttke Meta-GWAS paper in 2019. 
+### 3. Using GWAS, we replicated 162 SNPs in 10 Loci out of the 147 associated Loci with kidney function discovered by Mattias Wuttke Meta-GWAS paper in 2019. 
  
 
 
-## 4. For CHRIS participants, we derived dosage level for those 162 replicated SNPs from TOPMed imputed VCF files and merged it with our phenotype using unique AID number.
+### 4. For CHRIS participants, we derived dosage level for those 162 replicated SNPs from TOPMed imputed VCF files and merged it with our phenotype using unique AID number.
 
 
 
-## 5. We first standardized TSH quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
+### 5. We then standardized TSH using quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
+
+We've used these intervals for categorizing TSH:
+Hyperthyrodism:  (0, 0.400)
+Normal:          (0.401, 3.799)
+Hypothyrodism:   (3.800, Inf)
 
 ```Rscript
 library(caret)
-
+---
 nq <- normalize2Reference(chris[chris$TSH.Ins == 0, "TSH"], 
                           refData = quantile(chris[chris$TSH.Ins == 1, "TSH"], 
                                              probs = seq(0,1, length.out=length(chris[chris$TSH.Ins == 0, "TSH"])), 
                                              na.rm = TRUE, names = TRUE, type = 7, digits = 7), ties = TRUE)
+---
 #TSH quantile normalized
 chris$TSH.q <- chris$TSH
 chris[chris$TSH.Ins == 0, "TSH.q"] <- nq
 
 summary(cbind(nq, chris[chris$TSH.Ins == 0, "TSH"]))
-
+---
 #categorized TSH
 chris <- chris %>% mutate(TSH_cat = cut(TSH.q, breaks = c(-Inf, 0.401, 3.799, Inf), labels = c("0", "1", "2")))
 chris$TSH_cat <- as.character(chris$TSH_cat)
-
+---
 #changing the reference level to normal TSH
 chris$TSH_cat <- relevel(chris$TSH_cat, ref = 2)
 ```
+##6. Reassiginment of the individuals who have taken any mediacation/treatment for their thyroid dysfunction: 
+We assigned these people to their actual TSH level which we expect they belong before taking the treatment and regulaing their TSH.
 
-##6. And Finally here is the summary of Regression Model:
+##7. And Finally here is the summary of Regression Model:
 ```Rscript
 summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
-
+---
 Call:
-lm(formula = eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + 
-    PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
+lm(formula = eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
