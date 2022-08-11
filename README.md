@@ -38,7 +38,7 @@
 
 ##5. We first standardized TSH quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
 
-'''R
+'''bash
 library(caret)
 
 > nq <- normalize2Reference(chris[chris$TSH.Ins == 0, "TSH"], 
@@ -60,7 +60,7 @@ library(caret)
 '''
 
 ##6. And Finally here is the summary of Regression Model:
-'''R
+'''Rscript
 > summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
 
 Call:
