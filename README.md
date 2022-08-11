@@ -1,9 +1,9 @@
 # SNP-TSHcat_Interaction_Model
 
 
-##1. We first compute the eGFT using CKD-Epi formula using Standardized Serum Creatinine.
+## 1. We first compute the eGFT using CKD-Epi formula using Standardized Serum Creatinine.
 
-#####Computing eGFR.SCr
+### Computing eGFR.SCr
 > library(nephro)
 > table(chris$Sex) #check if SEX needs to be recoded
 > chris$ethnicity <- 0 # 0 for Europeans, and 1 for Africans
@@ -11,14 +11,14 @@
 > chris$eGFR     <- CKDEpi.creat(chris$SerumCreatinine.Std, chris$Sex, chris$Age, chris$ethnicity)
 > chris$eGFR.log <- log(chris$eGFR)
 
-#####Winsorizing lower tail of eGFR distribution
+### Winsorizing lower tail of eGFR distribution
 > chris$eGFRw    <- chris$eGFR
 > chris[chris$eGFR < 15 & is.na(chris$eGFR) != TRUE, "eGFRw"] <- 15
 > chris$eGFRw.log  <- log(chris$eGFRw)
 
-##2.Then we adjust eGFR for the Age and Sex of the CHRIS participants
+## 2.Then we adjust eGFR for the Age and Sex of the CHRIS participants
 
-#####eGFR.log residuals by new scheme
+### eGFR.log residuals by new scheme
 > chris$Sex <- as.factor(chris$Sex)
 > meGFRw.log <- lm(eGFRw.log ~ Age + Sex, data = chris)
 > myresidmeGFRw.log   <- data.frame(resm = meGFRw.log$residuals)
@@ -27,7 +27,7 @@
 
 
 
-##3. Using GWAS, we replicated 162 SNPs in 10 Loci out of the 147 associated Loci with kidney function
+## 3. Using GWAS, we replicated 162 SNPs in 10 Loci out of the 147 associated Loci with kidney function
  discovered by Mattias Wuttke Meta-GWAS paper in 2019. 
  
 
@@ -38,6 +38,7 @@
 
 ##5. We first standardized TSH quantile transformation function in Caret R package. Then we categorized TSH based on the imperical cutpoints as follows:
 
+'''R
 library(caret)
 
 > nq <- normalize2Reference(chris[chris$TSH.Ins == 0, "TSH"], 
@@ -56,10 +57,10 @@ library(caret)
 
 #####changing the reference level to normal TSH
 > chris$TSH_cat <- relevel(chris$TSH_cat, ref = 2)
-
+'''
 
 ##6. And Finally here is the summary of Regression Model:
-
+'''R
 > summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
 
 Call:
@@ -108,3 +109,4 @@ Residual standard error: 0.1345 on 9705 degrees of freedom
   (6 observations deleted due to missingness)
 Multiple R-squared:  0.01141,	Adjusted R-squared:  0.01008 
 F-statistic: 8.613 on 13 and 9705 DF,  p-value: < 2.2e-16
+'''
