@@ -42,7 +42,7 @@ chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.lo
 
 We've used these intervals for categorizing TSH:
 | Status | Lower bound, Upper bound |
-| ------ | ------------------------ |
+| ------ | :----------------------: |
 | Hyperthyrodism |  (0, 0.400]      |
 | Normal         |  (0.401, 3.799]  |
 | Hypothyrodism  |  (3.800, Inf)    |
