@@ -74,11 +74,7 @@ We assigned these people to their actual TSH level which we expect they belong b
 #### 7. And Finally here is the summary of Regression Model:
 ```Rscript
 summary(lm(eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
-```
-
-<details><summary>CLICK ME</summary>
-<p>
-```Rscript
+---
 Call:
 lm(formula = eGFRw.log.Res ~ `chr1:10599281`:TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
 
@@ -110,5 +106,3 @@ Residual standard error: 0.1345 on 9705 degrees of freedom
 Multiple R-squared:  0.01141,	Adjusted R-squared:  0.01008 
 F-statistic: 8.613 on 13 and 9705 DF,  p-value: < 2.2e-16
 ```
-</p>
-</details>
