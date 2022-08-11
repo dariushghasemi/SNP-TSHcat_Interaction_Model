@@ -1,4 +1,10 @@
-# SNP-TSHcat_Interaction_Model
+# Replication analysis pipeline for testing the kidney-thyroid interaction in SHIP study
+As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we decided to ask you to try to replicate the same anslyis in your cohort study. 
+
+Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
+
+
+## SNP-TSHcat_Interaction_Model
 
 
 #### 1. We first compute the eGFR using CKD-Epi formula in Nephro package in R using the Standardized Serum Creatinine.
