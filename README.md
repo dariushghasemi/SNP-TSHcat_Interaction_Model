@@ -5,11 +5,11 @@ This is the conceptual model for the replication analysis.
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
 Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals. Therefore, we need several steps to make the outcome variable for the above model:
-1 - Compute eGFR using CKD-Epi formula in Nephro package in R.
-2 - Take natural log of the eGFR.
-3 - Winsorize the eGFR to calibrate into this interval: (15, 200)
-4 - Adjust eGFR for the Age and Sex using a multiple linear regression model.
-5 - Taking the residuals of the above regression model.
+1 - [] Compute eGFR using CKD-Epi formula in Nephro package in R.
+2 - [] Take natural log of the eGFR.
+3 - [] Winsorize the eGFR to calibrate into this interval: (15, 200)
+4 - [] Adjust eGFR for the Age and Sex using a multiple linear regression model.
+5 - [] Taking the residuals of the above regression model.
 
 ## SNP-TSHcat_Interaction_Model
 
@@ -72,8 +72,9 @@ chris$TSH_cat <- as.character(chris$TSH_cat)
 chris$TSH_cat <- relevel(chris$TSH_cat, ref = 2)
 ```
 #### 6. Re-assignment of the individuals who have taken any mediacation/treatment for their thyroid dysfunction: 
-We assigned these people to their actual TSH level which we expected they belong before having taken the treatment and regulaing their TSH.
-![image](https://user-images.githubusercontent.com/47204821/184558053-a645d05e-280c-4c90-a516-7dae0586e949.png)
+We assigned these people to their actual TSH level which we expected they belong before having taken the treatment and regulaing their TSH like the following table:
+
+<img width="539" alt="Screenshot 2022-08-15 010539" src="https://user-images.githubusercontent.com/47204821/184558182-9d0df21f-1f9d-4660-85f1-e2900f30c247.png">
 
 
 #### 7. And Finally here is the summary of Regression Model:
