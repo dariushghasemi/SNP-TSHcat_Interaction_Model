@@ -1,8 +1,15 @@
 # Replication analysis pipeline for testing the kidney-thyroid interaction in SHIP study
-As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we decided to ask you to try to replicate the same anslyis in your cohort study. 
+As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we would like to ask your team at University of Greifswald to kindly replicate the same anslyis in your cohort study. 
 
+This is the conceptual model for the replication analysis.
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
+Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals. Therefore, we need several steps to make the outcome variable for the above model:
+1 - Compute eGFR using CKD-Epi formula in Nephro package in R.
+2 - Take natural log of the eGFR.
+3 - Winsorize the eGFR to calibrate into this interval: (15, 200)
+4 - Adjust eGFR for the Age and Sex using a multiple linear regression model.
+5 - Taking the residuals of the above regression model.
 
 ## SNP-TSHcat_Interaction_Model
 
@@ -19,17 +26,19 @@ chris$eGFR     <- CKDEpi.creat(chris$SerumCreatinine.Std, chris$Sex, chris$Age, 
 chris$eGFR.log <- log(chris$eGFR)
 ```Rscript
 
-#### Winsorizing lower tail of eGFR distribution
+#### Winsorizing lower tail and upper tail of eGFR distribution
 ```Rscript
 chris$eGFRw      <- chris$eGFR
-chris[chris$eGFR < 15 & is.na(chris$eGFR) != TRUE, "eGFRw"] <- 15
+chris[chris$eGFR < 15  & is.na(chris$eGFR) != TRUE, "eGFRw"] <- 15
+chris[chris$eGFR > 200 & is.na(chris$eGFR) != TRUE, "eGFRw"] <- 200
 chris$eGFRw.log  <- log(chris$eGFRw)
 ```
 #### 2.Then we adjust eGFR for the Age and Sex of the CHRIS participants
 ```Rscript
-# eGFR.log residuals by new scheme
+#eGFR.log residuals by the indirect scheme
 chris$Sex           <- as.factor(chris$Sex)
 meGFRw.log          <- lm(eGFRw.log ~ Age + Sex, data = chris)
+#taking the residuals
 myresidmeGFRw.log   <- data.frame(resm = meGFRw.log$residuals)
 chris$eGFRw.log.Res <- NA
 chris$eGFRw.log.Res[as.numeric(rownames(myresidmeGFRw.log))] <- myresidmeGFRw.log$resm
@@ -63,15 +72,16 @@ chris$TSH_cat <- as.character(chris$TSH_cat)
 chris$TSH_cat <- relevel(chris$TSH_cat, ref = 2)
 ```
 #### 6. Re-assignment of the individuals who have taken any mediacation/treatment for their thyroid dysfunction: 
-We assigned these people to their actual TSH level which we expect they belong before taking the treatment and regulaing their TSH.
+We assigned these people to their actual TSH level which we expected they belong before having taken the treatment and regulaing their TSH.
+![image](https://user-images.githubusercontent.com/47204821/184558053-a645d05e-280c-4c90-a516-7dae0586e949.png)
+
 
 #### 7. And Finally here is the summary of Regression Model:
 ```Rscript
-summary(lm(eGFRw.log.Res ~ `chr1:10599281`*TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
+summary(lm(eGFRw.log.Res ~ `chr1:10599281` * TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod))
 ---
 Call:
-lm(formula = eGFRw.log.Res ~ `chr1:10599281` * TSH_cat + PC1 + 
-    PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
+lm(formula = eGFRw.log.Res ~ `chr1:10599281` * TSH_cat + PC1 + PC2 + PC3 + PC4 + PC5 + PC6 + PC7 + PC8 + PC9 + PC10, data = vcfReg_TSHmod)
 ---
 Residuals:
      Min       1Q   Median       3Q      Max 
