@@ -5,11 +5,11 @@ This is the conceptual model for the replication analysis.
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
 Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals. Therefore, we need several steps to make the outcome variable for the above model:
-1 - [] Compute eGFR using CKD-Epi formula in Nephro package in R.
-2 - [] Take natural log of the eGFR.
-3 - [] Winsorize the eGFR to calibrate into this interval: (15, 200)
-4 - [] Adjust eGFR for the Age and Sex using a multiple linear regression model.
-5 - [] Taking the residuals of the above regression model.
+1. Compute eGFR using CKD-Epi formula in Nephro package in R.
+2. Take natural log of the eGFR.
+3. Winsorize the eGFR to calibrate into this interval: (15, 200)
+4. Adjust eGFR for the Age and Sex using a multiple linear regression model.
+5. Taking the residuals of the above regression model.
 
 ## SNP-TSHcat_Interaction_Model
 
