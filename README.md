@@ -4,17 +4,18 @@
 As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we would like to ask your team at University of Greifswald to kindly replicate the same anslyis in your cohort study. 
 
 ##### Table of Contents  
-1. [Conceptual model](#Conceptual Model)  
+1. [Conceptual Model](#Conceptual model)  
 2. [Steps](#steps)  
 ...snip...    
 <a name="conceptual model"/>
-# Conceptual model
+## Conceptual model
 
 This is the conceptual model for the replication analysis:
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
 Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals. 
 
+...snip...
 <a name="steps"/>
 # Steps
 Therefore, we need several steps prior performing the interaction tests to make the outcome variable for the above model:
