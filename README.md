@@ -5,7 +5,7 @@ As we have seen a considerable shift in the distribution of the P-values of the 
 
 ##### Table of Contents  
 1. [Conceptual model](#Conceptual Model)  
-2. [Steps](#emphasis)  
+2. [Steps](#steps)  
 ...snip...    
 <a name="conceptual model"/>
 # Conceptual model
