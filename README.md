@@ -1,24 +1,24 @@
 # Overview
----
 ## Analysis pipeline to test and replicate the interaction of the kidney-associated SNPs with thyroid function traits in SHIP study
 As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we would like to ask your team at University of Greifswald to kindly replicate the same anslyis in your cohort study. 
 
 ##### Table of Contents  
-1. [Conceptual Model](#Conceptual model)  
+1. [Conceptual Model](#conceptualmodel)  
 2. [Steps](#steps) 
-3.
+3. [SNP-TSHcat Interaction Model](#interactionmodel)
 
-...snip...    
-<a name="conceptual model"/>
-## Conceptual model
+...snip... 
+<a name="conceptualmodel"/>
+# Conceptual Model
 
 This is the conceptual model for the replication analysis:
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
-Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals. 
-
+Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals.
+...snip... 
 <a name="steps"/>
-## Steps
+# Steps
+
 Therefore, we need several steps prior performing the interaction tests to make the outcome variable for the above model:
 1. Compute eGFR using CKD-Epi formula in Nephro package in R.
 2. Take natural log of the eGFR.
@@ -26,8 +26,9 @@ Therefore, we need several steps prior performing the interaction tests to make 
 4. Adjust eGFR for the Age and Sex using a multiple linear regression model.
 5. Taking the residuals of the above regression model.
 
-## SNP-TSHcat_Interaction_Model
-
+...snip... 
+<a name="interactionmodel"/>
+# Interaction Model
 
 #### 1. We first compute the eGFR using CKD-Epi formula in Nephro package in R using the Standardized Serum Creatinine.
 ```Rscript
