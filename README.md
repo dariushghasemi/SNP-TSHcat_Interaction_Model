@@ -1,8 +1,14 @@
-# Analysis pipeline to test and replicate the interaction of the kidney-associated SNPs with thyroid function traits in SHIP study
+# Overview
+---
+## Analysis pipeline to test and replicate the interaction of the kidney-associated SNPs with thyroid function traits in SHIP study
 As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we would like to ask your team at University of Greifswald to kindly replicate the same anslyis in your cohort study. 
 
-## Contents
-
+##### Table of Contents  
+[Headers](#headers)  
+[Emphasis](#emphasis)  
+...snip...    
+<a name="headers"/>
+## Headers
 
 ### This is the conceptual model for the replication analysis.
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
