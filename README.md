@@ -2,6 +2,8 @@
 ## Analysis pipeline to test and replicate the interaction of the kidney-associated SNPs with thyroid function traits in SHIP study
 As we have seen a considerable shift in the distribution of the P-values of the interaction coefficients in the below model, we would like to ask your team at University of Greifswald to kindly replicate the same anslyis in your cohort study. 
 
+- Updated on 27 September 2022
+
 ##### Table of Contents  
 1. [Conceptual Model](#conceptualmodel)  
 2. [Steps](#steps) 
