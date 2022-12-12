@@ -9,7 +9,7 @@ As we have seen a considerable shift in the distribution of the P-values of the 
 2. [Steps](#steps) 
 3. [SNP-TSHcat Interaction Model](#interactionmodel)
 
-...snip... 
+
 <a name="conceptualmodel"/>
 # Conceptual Model
 
@@ -17,7 +17,7 @@ This is the conceptual model for the replication analysis:
 Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10 
 
 Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals.
-...snip... 
+
 <a name="steps"/>
 # Steps
 
