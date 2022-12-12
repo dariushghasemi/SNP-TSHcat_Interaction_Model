@@ -6,11 +6,11 @@ As we have seen a considerable shift in the distribution of the P-values of the 
 
 ##### Table of Contents  
 1. [Conceptual Model](#conceptualmodel)  
-2. [Steps](#steps) 
+2. [Steps in summary](#steps) 
 3. [SNP-TSHcat Interaction Model](#interactionmodel)
 
 
-<a name="conceptualmodel"/>
+'<a name="conceptualmodel"/>
 # Conceptual Model
 
 This is the conceptual model for the replication analysis:
@@ -18,7 +18,7 @@ Model: log(eGFR) ~ SNP + TSH_cat + SNP*TSH_cat + PC1 + ... + PC10
 
 Please note that the natural logarithm of the estimated Glomerular Filteration Rate, the depend variable in the model, log(eGFR), is the residuals of the model which indirictly adjusted eGFR for the both covariates, AGE and SEX of the individuals.
 
-<a name="steps"/>
+'<a name="steps"/>
 # Steps
 
 Therefore, we need several steps prior performing the interaction tests to make the outcome variable for the above model:
@@ -28,8 +28,8 @@ Therefore, we need several steps prior performing the interaction tests to make 
 4. Adjust eGFR for the Age and Sex using a multiple linear regression model.
 5. Taking the residuals of the above regression model.
 
-...snip... 
-<a name="interactionmodel"/>
+
+'<a name="interactionmodel"/>
 # Interaction Model
 
 #### 1. We first compute the eGFR using CKD-Epi formula in Nephro package in R using the Standardized Serum Creatinine.
